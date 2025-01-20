@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYP - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <nav>
+        <div>
+            <a href="/update_data">Home</a>
+            <a href="settings.html">Settings</a>
+        </div>
+    </nav>
+
+    <div class="controls">
+        <select id="sortOption">
+            <option value="nameAsc">Sort by Name (A-Z)</option>
+            <option value="nameDesc">Sort by Name (Z-A)</option>
+            <option value="countDesc">Sort by Stock Count (High to Low)</option>
+            <option value="countAsc">Sort by Stock Count (Low to High)</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search Parts...">
+    </div>
+
+    
+    
+    <div class="part-container" id="partContainer">
+        <!-- Parts will be dynamically added here -->
+    </div>
+
+    <div class="confirmation-box" id="confirmationBox">
+        <h2 id="confirmationMessage"></h2>
+        <div class="confirmation-buttons">
+            <button class="confirmation-button" onclick="grabPart()">Yes!</button>
+            <button class="confirmation-button" onclick="hideConfirmationBox()">No</button>
+        </div>
+    </div>
+        <div id="overlay" class="overlay"></div>
+
+
+</body>
+</html>

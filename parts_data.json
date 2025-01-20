@@ -1,0 +1,42 @@
+[
+    {
+        "code": "PART0001",
+        "name": "Male to Female jumperwire",
+        "count": 13,
+        "image_path": "images/Part0001.jpg",
+        "x": "0",
+        "y": "0"	
+    },
+    {
+        "code": "PART0002",
+        "name": "Male to Male jumperwire",
+        "count": 20,
+        "image_path": "images/Part0002.jpg",
+        "x": "0",
+        "y": "0"
+    },
+    {
+        "code": "PART0003",
+        "name": "Female to Female jumperwire",
+        "count": 15,
+        "image_path": "images/Part0003.jpg",
+        "x": "0",
+        "y": "0"
+    },
+    {
+        "code": "PART0004",
+        "name": "Breadboard 400 pins",
+        "count": 2,
+        "image_path": "images/Part0004.jpg",
+        "x": "0",
+        "y": "0"
+    },
+    {
+        "code": "PART0005",
+        "name": "Breadboard 830 pins",
+        "count": 2,
+        "image_path": "images/Part0005.jpg",
+        "x": "0",
+        "y": "0"
+    }
+]
