@@ -30,7 +30,7 @@ pip install -r requirements.txt
 To start the application, use the following command:
 
 ```bash
-python server.py
+sudo python server.py
 ```
 
 ## Usage
