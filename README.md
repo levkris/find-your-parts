@@ -1,4 +1,4 @@
-# Find Your Parts
+# Find Your Parts (Work in progress)
 
 Find Your Parts is a Python-based tool designed to help users search and identify electronic components from a curated list of parts. The tool provides an easy way to look up parts, view their specifications, and make informed decisions for electronics projects.
 
