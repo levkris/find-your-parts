@@ -44,7 +44,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 try:
                     if self.path == '/':
-                        self.path = '/update_data'  # Serve parts.html by default
+                        self.path = 'parts.html'  # Serve parts.html by default
                     # Check if the file exists
                     if os.path.exists(self.path):
                         # Serve the requested file
@@ -112,7 +112,7 @@ def prepare_response(data):
 # Create an instance of the HTTP server
 http_handler_object = MyHttpRequestHandler
 HTTP_HOST = '0.0.0.0'  # Listen on all available interfaces
-HTTP_PORT = 8000
+HTTP_PORT = 80
 http_server = socketserver.TCPServer((HTTP_HOST, HTTP_PORT), http_handler_object)
 
 # Start the HTTP server in a separate thread
