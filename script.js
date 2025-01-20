@@ -97,12 +97,31 @@ window.onload = async function() {
         .catch(error => console.error('Error updating data:', error));
 };
 
-  // Fetch signal strength from the server
-  fetch('/signal_strength')
-    .then(response => response.json())
-    .then(data => {
-      console.log("Signal Strength (Server Device):", data.signal_strength);
-    })
-    .catch(error => {
-      console.error("Error fetching signal strength:", error);
-    });
+// Fetch signal strength from the server
+fetch('/signal_strength')
+.then(response => response.text())
+.then(data => {
+    const regex = /Signal level=(-?\d+) dBm/;
+    const match = data.match(regex);
+    if (match) {
+        const signalLevel = parseInt(match[1], 10);
+        const wifiIcon = document.querySelector('.wifi-icon');
+        if (signalLevel >= -50) {
+            wifiIcon.textContent = 'signal_wifi_4_bar';
+        } else if (signalLevel >= -60) {
+            wifiIcon.textContent = 'network_wifi_3_bar';
+        } else if (signalLevel >= -70) {
+            wifiIcon.textContent = 'network_wifi_2_bar';
+        } else if (signalLevel >= -80) {
+            wifiIcon.textContent = 'network_wifi_1_bar';
+        } else {
+            wifiIcon.textContent = 'signal_wifi_0_bar';
+        }
+    } else {
+        console.error("Unable to parse signal strength:", data);
+    }
+})
+.catch(error => {
+    console.error("Error fetching signal strength:", error);
+});
+
