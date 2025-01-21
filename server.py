@@ -23,6 +23,27 @@ def get_signal_strength():
     except Exception as e:
         return f"Error retrieving signal strength: {str(e)}"
 
+# Function to check if Ethernet is in use
+def is_ethernet_in_use():
+    try:
+        # Run `ip addr` to get network interface details
+        result = subprocess.run(['ip', 'addr'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        output = result.stdout
+
+        # Check for Ethernet interfaces that are UP
+        ethernet_interfaces = []
+        for line in output.split("\n"):
+            if "state UP" in line and "eth" in line:
+                interface = line.split(":")[1].strip()
+                ethernet_interfaces.append(interface)
+        
+        if ethernet_interfaces:
+            return {"in_use": True, "interfaces": ethernet_interfaces}
+        else:
+            return {"in_use": False, "interfaces": []}
+    except Exception as e:
+        return {"error": f"Error checking Ethernet status: {str(e)}"}
+
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/update_data':
@@ -30,13 +51,18 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(302)
             self.send_header('Location', '/parts.html')  # Redirect to parts.html
             self.end_headers()
-        if self.path == '/signal_strength':
-            # Serve signal strength as JSON
+        elif self.path == '/signal_strength':
+            # Serve signal strength and Ethernet status as JSON
             signal_strength = get_signal_strength()
+            ethernet_status = is_ethernet_in_use()
+            response = {
+                "signal_strength": signal_strength,
+                "ethernet_status": ethernet_status
+            }
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(json.dumps({"signal_strength": signal_strength}).encode('utf-8'))
+            self.wfile.write(json.dumps(response).encode('utf-8'))
         else:
             # Serve JSON, HTML, CSS, JavaScript, and image files
             if self.path.endswith(('.html', '.css', '.js', '.json', '.jpg', '.jpeg', '.png', '.gif')):
