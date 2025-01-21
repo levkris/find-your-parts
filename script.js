@@ -117,6 +117,7 @@ window.onload = async function() {
 fetch('/signal_strength')
 .then(response => response.text())
 .then(data => {
+    console.log(data);
     const regex = /Signal level=(-?\d+) dBm/;
     const match = data.match(regex);
     if (match) {
