@@ -113,10 +113,12 @@ window.onload = async function() {
         .catch(error => console.error('Error updating data:', error));
 };
 
-// Fetch signal strength and Ethernet status from the server
-fetch('/signal_strength')
-    .then(response => response.json()) // Parse JSON response
-    .then(data => {
+// Fetch signal strength and Ethernet status from the server every 20 seconds
+setInterval(async () => {
+    try {
+        const response = await fetch('/signal_strength');
+        const data = await response.json();
+
         console.log(data);
 
         // Extract Wi-Fi signal strength and Ethernet status
@@ -152,9 +154,8 @@ fetch('/signal_strength')
         } else {
             console.error("Unable to parse Wi-Fi signal strength:", signalStrength);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error("Error fetching signal strength:", error);
-    });
-
+    }
+}, 20000);
 
