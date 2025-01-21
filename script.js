@@ -107,10 +107,7 @@ window.onload = async function() {
     const partsData = await fetchPartsData();
     renderParts(partsData);
 
-    // Request server to update data when the page is loaded or refreshed
-    fetch('/update_data')
-        .then(response => response.text())
-        .catch(error => console.error('Error updating data:', error));
+
 };
 
 async function updateSignalStatus() {

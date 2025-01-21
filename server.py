@@ -46,12 +46,7 @@ def is_ethernet_in_use():
 
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path == '/update_data':
-            # Optionally handle updating data here if needed
-            self.send_response(302)
-            self.send_header('Location', '/parts.html')  # Redirect to parts.html
-            self.end_headers()
-        elif self.path == '/signal_strength':
+        if self.path == '/signal_strength':
             # Serve signal strength and Ethernet status as JSON
             signal_strength = get_signal_strength()
             ethernet_status = is_ethernet_in_use()
