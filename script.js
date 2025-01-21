@@ -113,33 +113,28 @@ window.onload = async function() {
         .catch(error => console.error('Error updating data:', error));
 };
 
-// Fetch signal strength and Ethernet status from the server every 20 seconds
-setInterval(async () => {
+async function updateSignalStatus() {
     try {
         const response = await fetch('/signal_strength');
         const data = await response.json();
 
         console.log(data);
 
-        // Extract Wi-Fi signal strength and Ethernet status
         const signalStrength = data.signal_strength;
         const ethernetStatus = data.ethernet_status;
         const wifiIcon = document.querySelector('.wifi-icon');
 
-        // Check if Ethernet is in use
         if (ethernetStatus.in_use) {
             wifiIcon.textContent = 'settings_ethernet';
-            return; // Skip Wi-Fi signal logic
+            return;
         }
 
-        // Regex to extract signal level from the Wi-Fi signal data
         const regex = /Signal level=(-?\d+) dBm/;
         const match = signalStrength.match(regex);
 
         if (match) {
             const signalLevel = parseInt(match[1], 10);
 
-            // Update Wi-Fi icon based on signal strength
             if (signalLevel >= -50) {
                 wifiIcon.textContent = 'signal_wifi_4_bar';
             } else if (signalLevel >= -60) {
@@ -157,5 +152,11 @@ setInterval(async () => {
     } catch (error) {
         console.error("Error fetching signal strength:", error);
     }
-}, 20000);
+}
+
+// Fetch signal strength and Ethernet status on start
+updateSignalStatus();
+
+// Fetch signal strength and Ethernet status every 20 seconds
+setInterval(updateSignalStatus, 20000);
 
