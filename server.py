@@ -44,7 +44,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             else:
                 try:
                     if self.path == '/':
-                        self.path = '/parts.html'  # Serve parts.html by default
+                        self.path = './parts.html'  # Serve parts.html by default
                     # Check if the file exists
                     if os.path.exists(self.path):
                         # Serve the requested file
