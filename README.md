@@ -37,7 +37,7 @@ sudo python server.py
 
 1. Launch the server
 2. Go to your browser
-3. Enter the ip address or hostname with port 8000
+3. Enter the ip address or hostname
 4. Find your parts!
 
 ## Contributing
