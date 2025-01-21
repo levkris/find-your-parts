@@ -7,7 +7,13 @@ async function fetchPartsData() {
 // Function to render parts on the page
 function renderParts(parts) {
     const partContainer = document.getElementById('partContainer');
+    const itemsCountText = document.getElementById('itemCount');
     partContainer.innerHTML = ''; // Clear previous content
+
+    const itemsCount = parts.length;
+
+    itemsCountText.innerText = `${itemsCount} Items`;
+
     parts.forEach(part => {
         const partElement = document.createElement('div');
         partElement.classList.add('part');
@@ -24,27 +30,37 @@ function renderParts(parts) {
 function showConfirmationBox(partName) {
     const confirmationBox = document.getElementById('confirmationBox');
     const confirmationMessage = document.getElementById('confirmationMessage');
-    const overlay = document.getElementById('overlay');
     
     confirmationMessage.innerHTML = "Are you sure you want to grab:<br>" + partName + "?";
     confirmationBox.style.display = 'block';
-    overlay.style.display = 'block'; // Show the overlay
 }
 
 function hideConfirmationBox() {
     const confirmationBox = document.getElementById('confirmationBox');
-    const overlay = document.getElementById('overlay');
     
     confirmationBox.style.display = 'none';
-    overlay.style.display = 'none'; // Hide the overlay
-}
 
-const overlay = document.getElementById('overlay');
-overlay.addEventListener('click', hideConfirmationBox);
+    confirmationBox.innerHTML = `
+        <h2 id="confirmationMessage"></h2>
+        <div class="confirmation-buttons">
+            <button class="confirmation-button" onclick="grabPart()">Yes!</button>
+            <button class="confirmation-button" onclick="hideConfirmationBox()">No</button>
+        </div>
+    `;
+}
 
 // Function to grab part
 function grabPart() {
-    hideConfirmationBox();
+    const confirmationBox = document.getElementById('confirmationBox');
+
+    confirmationBox.innerHTML = `
+        <img class="animation" src="./animations/grab-part.gif" draggable="false">
+        <p>Grabbing part...</p>
+        <div class="confirmation-buttons">
+            <button class="confirmation-button" onclick="hideConfirmationBox()">Close</button>
+        </div>
+    `;
+
 }
 
 // Function to filter parts based on search input

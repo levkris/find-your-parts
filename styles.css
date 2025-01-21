@@ -98,6 +98,7 @@ nav div {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
     z-index: 1001; /* Ensure it's above the overlay */
     text-align: center;
+    transition: all 0.3s ease;
 
 }
 .confirmation-box h2 {
@@ -144,6 +145,9 @@ nav div {
     display: flex;
     justify-content: center;
     margin-top: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 15px;
 }
 .controls select,
 .controls input[type="text"] {
@@ -161,16 +165,55 @@ nav div {
     transition: all 0.3s ease;
 }
 
+@media screen and (max-width: 600px) {
+    .controls select,
+    .controls input[type="text"] {
+        width: 100%;
+    }
+    .part {
+        width: 100%;
+        height: 500px;
+    }
+    .confirmation-box {
+        width: calc(100% - 100px);
+    }
+}
+
+
 .controls select{
     background-color: #fff;
 }
 
-
-.wifi-icon {
+.header {
     color: var(--text);
-    font-size: 40px;
-    margin: auto;
-    margin-left: 10px;
+    font-size: 27px;
+    width: 100%;
+    text-align: center;
     margin-top: 10px;
 }
 
+.item-count {
+    margin-left: 45px;
+}
+
+.wifi-icon {
+    float: right;
+    margin-right: 20px;
+    user-select: none;
+}
+
+.animation {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    animation: fade 0.3s ease-in-out;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
