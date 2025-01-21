@@ -5,39 +5,7 @@ import os
 import socket
 import threading
 import subprocess
-import time
-
-# Helper functions
-def get_active_interfaces():
-    """Retrieve active network interfaces."""
-    try:
-        result = subprocess.run(['ip', 'addr'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        output = result.stdout
-        active_interfaces = []
-        for line in output.split("\n"):
-            if "state UP" in line and ("eth" in line or "wlan" in line):
-                interface = line.split(":")[1].strip()
-                active_interfaces.append(interface)
-        return active_interfaces
-    except Exception as e:
-        return []
-
-def get_ip_address(interface=""):
-    """Retrieve the current IP address of a given interface."""
-    try:
-        if interface:
-            result = subprocess.run(
-                ['ip', 'addr', 'show', interface],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
-            )
-            output = result.stdout
-            for line in output.split("\n"):
-                if "inet " in line:
-                    return line.strip().split(" ")[1].split("/")[0]
-        return "0.0.0.0"
-    except Exception as e:
-        return "0.0.0.0"
-
+# Custom HTTP request handler
 
 # Function to get signal strength
 def get_signal_strength():
@@ -143,40 +111,6 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             f.write(updated_data.decode('utf-8'))
         self.send_response(200)
         self.end_headers()
-
-# Server Management
-def start_http_server():
-    """Start the HTTP server."""
-    HTTP_PORT = 80
-    handler = MyHttpRequestHandler
-    http_server = socketserver.TCPServer(("0.0.0.0", HTTP_PORT), handler)
-    print(f"HTTP Server started on port {HTTP_PORT}")
-    http_server.serve_forever()
-
-def start_raw_socket_server():
-    """Start the raw socket server."""
-    SOCKET_PORT = 9000
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.bind(("0.0.0.0", SOCKET_PORT))
-    server_socket.listen(5)
-    print(f"Raw Socket Server listening on port {SOCKET_PORT}")
-    while True:
-        client_socket, client_address = server_socket.accept()
-        data = client_socket.recv(1024).decode("utf-8")
-        print(f"Received data from {client_address}: {data}")
-        client_socket.sendall("Data received.".encode("utf-8"))
-        client_socket.close()
-
-def monitor_network():
-    """Monitor network interfaces and restart servers if necessary."""
-    active_interfaces = set()
-    while True:
-        new_interfaces = set(get_active_interfaces())
-        if new_interfaces != active_interfaces:
-            print(f"Network change detected: {new_interfaces}")
-            active_interfaces = new_interfaces
-            # Optionally handle server restarts or updates here
-        time.sleep(5)
 
 
 # Function to handle incoming data and send a response
