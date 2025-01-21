@@ -113,32 +113,48 @@ window.onload = async function() {
         .catch(error => console.error('Error updating data:', error));
 };
 
-// Fetch signal strength from the server
+// Fetch signal strength and Ethernet status from the server
 fetch('/signal_strength')
-.then(response => response.text())
-.then(data => {
-    console.log(data);
-    const regex = /Signal level=(-?\d+) dBm/;
-    const match = data.match(regex);
-    if (match) {
-        const signalLevel = parseInt(match[1], 10);
+    .then(response => response.json()) // Parse JSON response
+    .then(data => {
+        console.log(data);
+
+        // Extract Wi-Fi signal strength and Ethernet status
+        const signalStrength = data.signal_strength;
+        const ethernetStatus = data.ethernet_status;
         const wifiIcon = document.querySelector('.wifi-icon');
-        if (signalLevel >= -50) {
-            wifiIcon.textContent = 'signal_wifi_4_bar';
-        } else if (signalLevel >= -60) {
-            wifiIcon.textContent = 'network_wifi_3_bar';
-        } else if (signalLevel >= -70) {
-            wifiIcon.textContent = 'network_wifi_2_bar';
-        } else if (signalLevel >= -80) {
-            wifiIcon.textContent = 'network_wifi_1_bar';
-        } else {
-            wifiIcon.textContent = 'signal_wifi_0_bar';
+
+        // Check if Ethernet is in use
+        if (ethernetStatus.in_use) {
+            wifiIcon.textContent = 'settings_ethernet';
+            return; // Skip Wi-Fi signal logic
         }
-    } else {
-        console.error("Unable to parse signal strength:", data);
-    }
-})
-.catch(error => {
-    console.error("Error fetching signal strength:", error);
-});
+
+        // Regex to extract signal level from the Wi-Fi signal data
+        const regex = /Signal level=(-?\d+) dBm/;
+        const match = signalStrength.match(regex);
+
+        if (match) {
+            const signalLevel = parseInt(match[1], 10);
+
+            // Update Wi-Fi icon based on signal strength
+            if (signalLevel >= -50) {
+                wifiIcon.textContent = 'signal_wifi_4_bar';
+            } else if (signalLevel >= -60) {
+                wifiIcon.textContent = 'network_wifi_3_bar';
+            } else if (signalLevel >= -70) {
+                wifiIcon.textContent = 'network_wifi_2_bar';
+            } else if (signalLevel >= -80) {
+                wifiIcon.textContent = 'network_wifi_1_bar';
+            } else {
+                wifiIcon.textContent = 'signal_wifi_0_bar';
+            }
+        } else {
+            console.error("Unable to parse Wi-Fi signal strength:", signalStrength);
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching signal strength:", error);
+    });
+
 
